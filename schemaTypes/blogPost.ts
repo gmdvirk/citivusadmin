@@ -22,54 +22,83 @@ export const blogPost = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
-      rows: 3,
-      validation: Rule => Rule.required().max(200),
-    }),
-    defineField({
-      name: 'tableOfContents',
-      title: 'Table of Contents',
+      name: 'content',
+      title: 'Content',
       type: 'array',
       of: [
         {
-          type: 'object',
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'H1', value: 'h1' },
+            { title: 'H2', value: 'h2' },
+            { title: 'H3', value: 'h3' },
+            { title: 'H4', value: 'h4' },
+            { title: 'H5', value: 'h5' },
+            { title: 'H6', value: 'h6' },
+            { title: 'Quote', value: 'blockquote' },
+          ],
+          lists: [
+            { title: 'Bullet', value: 'bullet' },
+            { title: 'Number', value: 'number' },
+          ],
+          marks: {
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+              { title: 'Code', value: 'code' },
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  {
+                    name: 'href',
+                    type: 'url',
+                    title: 'URL',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: 'image',
+          options: { hotspot: true },
           fields: [
             {
-              name: 'title',
+              name: 'alt',
               type: 'string',
-              title: 'Section Title',
-              validation: Rule => Rule.required(),
+              title: 'Alternative Text',
             },
             {
-              name: 'slug',
-              type: 'slug',
-              title: 'Section Slug',
-              options: {
-                source: 'title',
-                maxLength: 96,
-              },
-              validation: Rule => Rule.required(),
-            },
-            {
-              name: 'order',
-              type: 'number',
-              title: 'Order',
-              validation: Rule => Rule.required().min(1),
+              name: 'caption',
+              type: 'string',
+              title: 'Caption',
             },
           ],
         },
+        {
+          type: 'code',
+          title: 'Code Block',
+          options: {
+            language: 'javascript',
+            languageAlternatives: [
+              { title: 'JavaScript', value: 'javascript' },
+              { title: 'TypeScript', value: 'typescript' },
+              { title: 'HTML', value: 'html' },
+              { title: 'CSS', value: 'css' },
+              { title: 'Python', value: 'python' },
+              { title: 'JSON', value: 'json' },
+              { title: 'Markdown', value: 'markdown' },
+            ],
+            withFilename: true,
+          },
+        },
       ],
-      description: 'This will be automatically generated from your blog sections',
-    }),
-    defineField({
-      name: 'sections',
-      title: 'Blog Sections',
-      type: 'array',
-      of: [{ type: 'blogSection' }],
-      validation: Rule => Rule.required().min(1),
-      description: 'Add multiple sections to build your blog post content',
+      validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'featuredImage',
@@ -95,57 +124,10 @@ export const blogPost = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'reference',
-      to: { type: 'category' },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'tags',
-      title: 'Tags',
-      type: 'array',
-      of: [{ type: 'string' }],
-      options: {
-        layout: 'tags',
-      },
-    }),
-    defineField({
       name: 'publishDate',
       title: 'Publish Date',
       type: 'datetime',
       validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'readTime',
-      title: 'Read Time',
-      type: 'string',
-      placeholder: 'e.g., 8 min read',
-    }),
-    defineField({
-      name: 'featured',
-      title: 'Featured Post',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'object',
-      fields: [
-        {
-          name: 'metaDescription',
-          type: 'text',
-          title: 'Meta Description',
-          rows: 3,
-        },
-        {
-          name: 'keywords',
-          type: 'array',
-          title: 'Keywords',
-          of: [{ type: 'string' }],
-        },
-      ],
     }),
   ],
   preview: {
